@@ -1,17 +1,28 @@
-import logging.config
-import os
+"""Defines the YAML schema via Cerberus."""
 
-import yaml
-import box
-
-# Global configuration object
-with open('./config/main.yml', 'r') as file:
-    cfg = box.Box(yaml.safe_load(file), default_box=True, default_box_attr=None)
-
-os.makedirs(cfg.path.logs, exist_ok=True)
-
-if os.path.exists(cfg.path.log_config):
-    with open(cfg.path.log_config, "r") as file:
-        logging.config.dictConfig(yaml.safe_load(file))
-else:
-    raise FileNotFoundError(f"Log configuration file not found: {cfg.path.log_config}")
+main_schema = {
+    'path': {
+        'type': 'dict',
+        'schema': {
+            'data_raw': {'type': 'string'},
+            'data_processed': {'type': 'string'},
+            'logs': {'type': 'string'},
+            'log_config': {'type': 'string'}
+        }
+    },
+    'source': {
+        'type': 'dict',
+        'schema': {
+            'bucket': {'type': 'string'},
+            'files': {'type': 'list', 'schema': {'type': 'string'}}
+        }
+     },
+    'process': {
+        'type': 'dict',
+        'schema': {
+            'operations': {'type': 'string'},
+            'aircraft': {'type': 'string'},
+            'weapons': {'type': 'string'},
+        }
+    }
+}

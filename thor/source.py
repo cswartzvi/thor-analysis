@@ -3,18 +3,17 @@ import pathlib
 from typing import Iterable
 
 import boto3
-
-from thor.config import cfg
-
-
-logger = logging.getLogger(__name__)
+import box
 
 
-def main():
-    fetch_s3_data(cfg.source.bucket, cfg.path.data_raw, cfg.source.file_keys)
+LOGGER = logging.getLogger(__name__)
 
 
-def fetch_s3_data(bucket: str, destination: str, keys: Iterable[str]):
+def main(cfg: box.Box):
+    fetch_s3_data(cfg.source.bucket, cfg.path.data_raw, cfg.source.files)
+
+
+def fetch_s3_data(bucket: str, destination: str, files: Iterable[str]):
     """Downloads data from AWS S3 to a destination folder.
 
     Args:
@@ -22,11 +21,11 @@ def fetch_s3_data(bucket: str, destination: str, keys: Iterable[str]):
         destination: Path of the destination folder.
         keys: An iterable of S3 bucket keys (relative the bucket).
     """
-    logger.info(f"Intializing download from S3 bucket {bucket}")
+    LOGGER.info(f"Intializing download from S3 bucket {bucket}")
     folder = pathlib.Path(destination)
     folder.mkdir(parents=True, exist_ok=True)
-    logger.debug("Intializing S3 client")
+    LOGGER.debug("Intializing S3 client")
     s3_client = boto3.client('s3')
-    for key in keys:
-        logger.info(f"Downloading {key} to {folder}")
-        s3_client.download_file(bucket, key, str(folder / pathlib.Path(key).name))
+    for file in files:
+        LOGGER.info(f"Downloading {file} to {folder}")
+        s3_client.download_file(bucket, file, str(folder / pathlib.Path(file).name))
