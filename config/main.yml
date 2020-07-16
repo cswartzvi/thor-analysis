@@ -1,0 +1,11 @@
+path:
+  data_raw: "./data/raw"
+  data_processed: "./data/processed"
+  logs: "./logs"
+  log_config: "./config/logging.yml"
+source:
+  bucket: thor-wwii
+  file_keys:
+    - data.world/THOR_WWII_DATA.csv
+    - data.world/THOR_WWII_AIRCRAFT_GLOSS.csv
+    - data.world/THOR_WWII_WEAPON_GLOSS.csv
