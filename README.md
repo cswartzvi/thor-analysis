@@ -1,2 +1,2 @@
-# thor-wwii-analysis
-Analysis of the Theater History of Operations (THOR) World World II database.
+# THOR Analysis
+Analysis of the Theater History of Operations (THOR) databases.
