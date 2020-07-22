@@ -18,6 +18,7 @@ TASKS = {
 
 
 def main(cfg: box.Box, task: str):
+    """Execute task with specified configuration object."""
     try:
         TASKS[task](cfg)
     except Exception:
@@ -26,19 +27,12 @@ def main(cfg: box.Box, task: str):
 
 
 @click.command()
-@click.option(
-    "--config",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
-    required=True,
-    help="Name of task to execute",
-)
-@click.option(
-    "--task",
-    type=click.Choice(TASKS.keys()),
-    required=True,
-    help="Name of task to execute",
-)
+@click.option("--config", required=True, help="Name of configuration file",
+              type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option("--task", required=True, help="Name of task to execute",
+              type=click.Choice(TASKS.keys()))
 def main_cli(config, task):
+    """Execution point for command line execution."""
 
     # Read and validate the YAML file
     with open('./config/main.yml', 'r') as file:
@@ -49,7 +43,7 @@ def main_cli(config, task):
         else:
             raise KeyError(validator.errors)
 
-    # Initialize the logger from the configuration file
+    # Initialize the logging from the configuration file
     os.makedirs(cfg.path.logs, exist_ok=True)
     if os.path.exists(cfg.path.log_config):
         with open(cfg.path.log_config, "r") as file:

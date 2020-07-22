@@ -1,17 +1,45 @@
 path:
   data_raw: "./data/raw"
+  data_intermediate: "./data/intermediate"
   data_processed: "./data/processed"
   logs: "./logs"
   log_config: "./config/logging.yml"
 
-source:
-  bucket: thor-wwii
-  files:
-    - data.world/THOR_WWII_DATA.csv
-    - data.world/THOR_WWII_AIRCRAFT_GLOSS.csv
-    - data.world/THOR_WWII_WEAPON_GLOSS.csv
+sources:
+  - bucket: thor-wwii
+    folder: data.world
+    files:
+      - THOR_WWII_DATA.csv
+      - THOR_WWII_AIRCRAFT_GLOSS.csv
+      - THOR_WWII_WEAPON_GLOSS.csv
+  - bucket: thor-vietnam
+    folder: data
+    files:
+      - THOR_Vietnam_Bombing_Operations.csv
+      - THOR_Vietnam_Aircraft_Glossary.csv
+      - THOR_Vietnam_Weapons_Glossary.csv
 
-process:
-  operations: THOR_WWII_DATA.csv
-  aircraft: THOR_WWII_AIRCRAFT_GLOSS.csv
-  weapons: THOR_WWII_WEAPON_GLOSS.csv
+datasets:
+  - source: THOR_Vietnam_Bombing_Operations.csv
+    destination: 
+    columns:
+      - COUNTRYFLYINGMISSION
+      - MILSERVICE
+      - MSNDATE
+      - VALID_AIRCRAFT_ROOT
+      - TAKEOFFLOCATION
+      - TGTLATDD_DDD_WGS84
+      - TGTLONDDD_DDD_WGS84
+      - TGTTYPE
+      - NUMWEAPONSDELIVERED
+      - WEAPONTYPE
+      - MFUNC
+      - MFUNC_DESC
+      - NUMOFACFT
+      - OPERATIONSUPPORTED
+      - PERIODOFDAY
+      - UNIT
+      - TGTCONTROL
+      - TGTCOUNTRY
+      - MFUNC_DESC_CLASS
+-
